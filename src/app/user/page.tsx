@@ -1,15 +1,20 @@
-import { drizzle } from "drizzle-orm/mysql2";
-import {user} from "@/db/schema"
+import { user } from "@/db/schema"
+import db from "@/app/lib/db"
+import { Typography } from "@mui/material";
 
 export default async function  UserPage() {
 
-    const db = drizzle(process.env.DATABASE_URL!);
-
     const users = await db.select().from(user);
+    const countUser = await db.$count(user);
 
   return (
     <main>
-      <p>{JSON.stringify(users)}</p>
+      <Typography variant="h3">All users {countUser}</Typography>
+     {
+      users.length > 0 && users.map((item) => {
+        return <p key={item.id}>{item.fullname} {item.id}</p>
+      })
+      }
     </main>
   );
 }
