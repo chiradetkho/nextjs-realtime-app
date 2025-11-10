@@ -4,6 +4,7 @@ import { sql } from "drizzle-orm"
 export const user = mysqlTable("user", {
 	id: int().autoincrement().notNull(),
 	fullname: varchar({ length: 250 }).notNull(),
+	email: varchar({ length: 250}).notNull().unique('emailIndex')
 },
 (table) => [
 	primaryKey({ columns: [table.id], name: "user_id"}),
